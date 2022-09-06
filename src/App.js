@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Score } from './components/Score';
-import { Card } from './components/Card';
+import { Deck } from './components/Deck';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
       </header>
       <Score />
-      <Card />
+      <Deck />
     </div>
   );
 }
