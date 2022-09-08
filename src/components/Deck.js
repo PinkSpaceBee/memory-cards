@@ -7,27 +7,30 @@ function importAll(r) {
   
 const gifs = importAll(require.context('../gifs/', false, /\.(gif)$/));
 
-export const Deck = () => {
+// array of 20 gifs
+const deck = gifs.map(elem => 
+    <img key={elem.toString()} src={elem} />
+);
+
+export const Deck = (props) => {
+
+    // display only 3 cards
+    const [displayedCards, setDisplayedCards] = useState(deck.slice(0,3));
+    const [cardPicked, setCardPicked] = useState([]);
+
+    // shuffle the deck every time the page is refreshed
+    useEffect(() => {
+        setDisplayedCards(shuffle(deck).slice(0,3));
+    }, []);
 
     const shuffle = (array) => {return array.sort(() => Math.random() - 0.5)};
-    
 
-    // array of 20 gifs
-    const deck = gifs.map(elem => 
-        <img key={elem.toString()} src={elem} />
-    );
-
-    const doSth = () => console.log('sup');
-
-    let pickedCards = [];
-
-    // display 3 cards to pick from
-    // and shuffle the deck
-    // display unique cards the first two rounds, then display a mix of already picked and not picked yet cards
-    const displayedCards = pickedCards.length < 2 ? shuffle(deck).filter(elem => deck.indexOf(elem) < 3) : doSth();
+    const pickCard = (e) => {
+        console.log(e.target);
+    }
 
     return (
-        <div>
+        <div onClick={pickCard}>
             {displayedCards}
         </div>
     )
