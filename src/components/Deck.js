@@ -16,7 +16,7 @@ export const Deck = (props) => {
 
     // display only 3 cards
     const [displayedCards, setDisplayedCards] = useState(deck.slice(0,3));
-    const [cardPicked, setCardPicked] = useState([]);
+    const [cardsPicked, setCardsPicked] = useState([]);
 
     // shuffle the deck every time the page is refreshed
     useEffect(() => {
@@ -25,9 +25,16 @@ export const Deck = (props) => {
 
     const shuffle = (array) => {return array.sort(() => Math.random() - 0.5)};
 
+
     const pickCard = (e) => {
-        console.log(e.target);
+        setCardsPicked(cardsPicked => [...cardsPicked, e.target]);
+        console.log(cardsPicked);
     }
+
+    // function pickCard(e) {
+    //     console.log(e.target);
+    // }
+
 
     return (
         <div onClick={pickCard}>
