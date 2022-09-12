@@ -1,3 +1,4 @@
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { useState, useEffect, useRef } from 'react';
 
 // import all gifs
@@ -30,21 +31,44 @@ export const Deck = (props) => {
     });
 
     const pickCard = (e) => {
-        setCardsPicked(cardsPicked => [...cardsPicked, e]);
-        console.log(cardsPicked);
+        const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
+
+        setCardsPicked((cardsPicked) => ([...cardsPicked, deck.filter(elem => elem.key === gifKey)]));
     }
 
-    // some minor changes: first, it seems fucking kudicrous to write a separate function to set state to unplayed cards. Isn't the updateDisplayedCards is like a container function to smaller functions? Besides, setUnplayedCards IS a function so it's not like I'm violating a single responsibility principle here. 
+    // some minor changes: first, it seems fucking kudicrous to write a separate function to set state to unplayed cards. Isn't the updateDisplayedCards is like a container function to smaller functions? Besides, setUnplayedCards IS a function so it's not like I'm violating the single responsibility principle here. 
     const updateDisplayedCards = (e) => {
         const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
+        setUnplayedCards(unplayedCards.filter(elem => elem.key !== gifKey));
 
         if (cardsPicked.length < 2) {
             setDisplayedCards(deck.slice(0,3));
-            setUnplayedCards(unplayedCards.filter(elem => elem.key !== gifKey));
+            console.log(unplayedCards);
         } else {
-            setUnplayedCards(unplayedCards.filter(elem => elem.key !== gifKey));
-            console.log('sup bitches');
+            shuffle(cardsPicked);
+            shuffle(unplayedCards);
             console.log(cardsPicked);
+            //let mixedCards = [];
+            const oneOrTwo = () => Math.floor(Math.random() * (Math.floor(3) - Math.ceil(1)) + 1);
+            console.log({cardsPicked, unplayedCards})
+            //let mixedCards = unplayedCards.slice(0,1);
+            
+            //console.log(mixedCards);
+            //setDisplayedCards(cardsPicked);
+            // if (oneOrTwo() == 1) {
+            //     //mixedCards.concat(cardsPicked.slice(0,1)).concat(unplayedCards.slice(0,2));
+
+            //     mixedCards = mixedCards.concat(cardsPicked.slice(0,1));
+            //     console.log(mixedCards.concat(cardsPicked.slice(0,1)));
+
+            //     setDisplayedCards(mixedCards);
+            // } else {
+            //     //mixedCards.concat(cardsPicked.slice(0,2)).concat(unplayedCards.slice(0,1));
+            //     mixedCards = mixedCards.concat(cardsPicked.slice(0,1));
+            //     console.log(mixedCards);
+            //     setDisplayedCards(mixedCards);
+            // }
+            // console.log(oneOrTwo() == 1);
         }
     }
 
