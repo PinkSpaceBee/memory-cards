@@ -35,7 +35,6 @@ export const Deck = (props) => {
 
         // deck.filter returns an array consisting of a single object ofc, so I add this object to the cardsPicked array and not the filtered deck
         setCardsPicked([...cardsPicked, deck.filter(elem => elem.key === gifKey)[0]]);
-        console.log(cardsPicked);
     }
 
     // some minor changes: first, it seems fucking ludicrous to write a separate function to set state to unplayed cards. Isn't the updateDisplayedCards is like a container function to smaller functions? Besides, setUnplayedCards IS a function so it's not like I'm violating the single responsibility principle here. 
@@ -52,29 +51,16 @@ export const Deck = (props) => {
             console.log(cardsPicked);
             let mixedCards = [];
             const oneOrTwo = () => Math.floor(Math.random() * (Math.floor(3) - Math.ceil(1)) + 1);
-            console.log({cardsPicked, unplayedCards})
-            // works
-            //let mixedCards = unplayedCards.slice(0,1);
-            // seems to work too
-            //let mixedCards = cardsPicked.slice(0,1);
+
             mixedCards = unplayedCards.slice(0,1).concat(cardsPicked.slice(0,1));
-            console.log(unplayedCards);
-            console.log(cardsPicked);
-            //setDisplayedCards(cardsPicked);
-            // if (oneOrTwo() == 1) {
-            //     //mixedCards.concat(cardsPicked.slice(0,1)).concat(unplayedCards.slice(0,2));
-
-            //     mixedCards = mixedCards.concat(cardsPicked.slice(0,1));
-            //     console.log(mixedCards.concat(cardsPicked.slice(0,1)));
-
-            //     setDisplayedCards(mixedCards);
-            // } else {
-            //     //mixedCards.concat(cardsPicked.slice(0,2)).concat(unplayedCards.slice(0,1));
-            //     mixedCards = mixedCards.concat(cardsPicked.slice(0,1));
-            //     console.log(mixedCards);
-            //     setDisplayedCards(mixedCards);
-            // }
-            // console.log(oneOrTwo() == 1);
+            // it seems the pickedCards deck is not shuffled
+            if (oneOrTwo() == 1) {
+                mixedCards = unplayedCards.slice(0,2).concat(cardsPicked.slice(0,1));
+                setDisplayedCards(mixedCards);
+            } else {
+                mixedCards = unplayedCards.slice(0,1).concat(cardsPicked.slice(0,2));
+                setDisplayedCards(mixedCards);
+            }
         }
     }
 
