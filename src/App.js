@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Score } from './components/Score';
 import { Deck } from './components/Deck';
+import { Gameboard } from './components/Gameplay';
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <header className="App-header">
       </header>
       <Score />
-      <Deck />
+      <Gameboard />
     </div>
   );
 }
