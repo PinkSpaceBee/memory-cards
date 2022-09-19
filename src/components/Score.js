@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export const Score = () => {
-    const [count, setCount] = useState(0);
-
-    const incrementCount = () => {
-        setCount(count + 1);
-    }
+export const Score = ({score, bestScore}) => {
 
     return (
         <div>
-            <p>Score:</p>
-            <p>Best score:</p>
+            <p>Score: {score}</p>
+            <p>Best score: {bestScore}</p>
         </div>
     )
 }

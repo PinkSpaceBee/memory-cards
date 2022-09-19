@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 // import all gifs
 function importAll(r) {
     return r.keys().map(r);

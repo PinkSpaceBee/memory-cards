@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { Score } from './components/Score';
-import { Deck } from './components/Deck';
 import { Gameboard } from './components/Gameplay';
 
-function App() {
+const App = () => {
+  const [score, setScore] = useState(0);
+
+  const incrementCount = () => {
+      setScore(score + 1);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
       </header>
-      <Score />
-      <Gameboard />
+      <Score score={score} />
+      <Gameboard incrementCount={incrementCount}/>
     </div>
   );
 }

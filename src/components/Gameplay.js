@@ -4,7 +4,7 @@ import { deck } from './Deck';
 
 // idk why I exclusively use arrow syntax, ig bc it's so widespread in react? gotta do some research later, hope I'm not doing anything heinous lol
 
-export const Gameboard = () => {
+export const Gameboard = ({incrementCount}) => {
 
     // display only 3 cards to choose from
     const [displayedCards, setDisplayedCards] = useState(deck.slice(0,3));
@@ -19,6 +19,11 @@ export const Gameboard = () => {
         shuffle(unplayedCards);
         shuffle(cardsPicked);
     });
+    // ok gotta go finish later basically check if player picked a unique card when a card is selected
+    useEffect(() => {
+        checkForSameCard();
+        console.log(checkForSameCard());
+    }, [cardsPicked]);
 
     const pickCard = (e) => {
         const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
@@ -27,47 +32,54 @@ export const Gameboard = () => {
         const cardsToAdd = deck.filter(elem => elem.key === gifKey)[0];
 
         setCardsPicked([...cardsPicked, cardsToAdd]);
+
     }
+    const alertWinOrLose = () => {
+        //console.log(cardsPicked.length);
+        if (cardsPicked.length === 20) {
+            alert('win');
+        }
+    }
+
+    const startNewGame = () => {}
 
     const checkForSameCard = () => {
-        const test = [... new Set (cardsPicked)];
+        const copy = [... new Set (cardsPicked)];
 
+        // ig it's redundant to compare elements sinse I really just compare arr length? 
         const compareArrays = (a, b) => 
-        a.length === b.length &&
-        a.every((e, i) => e === b[i]);
+        a.length === b.length;
 
-        console.log(test);
-        console.log(compareArrays(test, cardsPicked));
+        return compareArrays(cardsPicked, copy);
+        // if (compareArrays(cardsPicked, copy)) {
+        //     console.log(cardsPicked);
+        //     console.log(copy);
+        //     incrementCount();
+        // } else {
+        //     alert('brrrr wrong card you lose meatbag');
+        // }
     }
+
+    useEffect(() => {
+        alertWinOrLose();
+    })
 
     // some minor changes: first, it seems fucking ludicrous to write a separate function to set state to unplayed cards. Isn't the updateDisplayedCards is like a container function to smaller functions? Besides, setUnplayedCards IS a function so it's not like I'm violating the single responsibility principle here. 
     const updateDisplayedCards = (e) => {
+        // okay it's a fucking mess I'm not sure what I'm doing wrong
         const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
         const cardsToAdd = unplayedCards.filter(elem => elem.key !== gifKey);
         setUnplayedCards(cardsToAdd);
 
         if (cardsPicked.length < 2) {
             setDisplayedCards(deck.slice(0,3));
-        } else if (cardsPicked.length < 21){
+        } else if (unplayedCards.length > 1){
 
-            let mixedCards = [];
-            const oneOrTwo = () => Math.floor(Math.random() * (Math.floor(3) - Math.ceil(1)) + 1);
-
-            if (oneOrTwo() == 1) {
-                mixedCards = unplayedCards.slice(0,2).concat(cardsPicked.slice(0,1));
-                setDisplayedCards(mixedCards);
-            } else {
-                mixedCards = unplayedCards.slice(0,1).concat(cardsPicked.slice(0,2));
-                setDisplayedCards(mixedCards);
-            }
-        } else {
-            console.log('win');
-        }
+            let mixedCards = [...unplayedCards.slice(0,2), ...(cardsPicked.slice(0,1))];
+            setDisplayedCards(mixedCards);
+        } 
     }
 
-    console.log(cardsPicked);
-    console.log(unplayedCards);
-    // okay the question is should I mutate the deck or is it better to create a subarray of unplayed (unpicked) cards and use it to display cards? I meeeeean mutating the deck is probably not a good idea?? hmmmm
 
     return (
         <div onClick={(e) => {pickCard(e.target); checkForSameCard(); updateDisplayedCards(e.target)}}>
