@@ -4,7 +4,7 @@ import { deck } from './Deck';
 
 // idk why I exclusively use arrow syntax, ig bc it's so widespread in react? gotta do some research later, hope I'm not doing anything heinous lol
 
-export const Gameboard = ({incrementCount}) => {
+export const Gameboard = ({score, incrementCount}) => {
 
     // display only 3 cards to choose from
     const [displayedCards, setDisplayedCards] = useState(deck.slice(0,3));
@@ -19,10 +19,14 @@ export const Gameboard = ({incrementCount}) => {
         shuffle(unplayedCards);
         shuffle(cardsPicked);
     });
-    // ok gotta go finish later basically check if player picked a unique card when a card is selected
+
+    // hmmm I'm not sure why does score is incremented before I click the first card. Isn't useEffect only supposed react to change in cardsPicked? Well I can bypass this for now if I start counting score from -1 instead of 0 but I have to do something about that
     useEffect(() => {
-        checkForSameCard();
-        console.log(checkForSameCard());
+        if (checkForSameCard()) {
+            incrementCount();
+        } else {
+            alert('test');
+        }
     }, [cardsPicked]);
 
     const pickCard = (e) => {
@@ -49,12 +53,19 @@ export const Gameboard = ({incrementCount}) => {
         // ig it's redundant to compare elements sinse I really just compare arr length? 
         const compareArrays = (a, b) => 
         a.length === b.length;
-
+        //incrementCount();
         return compareArrays(cardsPicked, copy);
         // if (compareArrays(cardsPicked, copy)) {
         //     console.log(cardsPicked);
         //     console.log(copy);
         //     incrementCount();
+        // } else {
+        //     alert('brrrr wrong card you lose meatbag');
+        // }
+
+        // if (compareArrays(cardsPicked, copy)) {
+        //     incrementCount();
+        //     console.log(score);
         // } else {
         //     alert('brrrr wrong card you lose meatbag');
         // }

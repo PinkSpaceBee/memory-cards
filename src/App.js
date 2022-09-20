@@ -3,7 +3,7 @@ import { Score } from './components/Score';
 import { Gameboard } from './components/Gameplay';
 
 const App = () => {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(-1);
 
   const incrementCount = () => {
       setScore(score + 1);
@@ -14,7 +14,7 @@ const App = () => {
       <header className="App-header">
       </header>
       <Score score={score} />
-      <Gameboard incrementCount={incrementCount}/>
+      <Gameboard score = {score} incrementCount={incrementCount}/>
     </div>
   );
 }
