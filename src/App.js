@@ -3,7 +3,7 @@ import { Score } from './components/Score';
 import { Gameboard } from './components/Gameplay';
 
 const App = () => {
-  const [score, setScore] = useState(-1);
+  const [score, setScore] = useState(0);
 
   const incrementCount = () => {
       setScore(score + 1);

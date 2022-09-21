@@ -21,10 +21,13 @@ export const Gameboard = ({score, incrementCount}) => {
     });
 
     // hmmm I'm not sure why does score is incremented before I click the first card. Isn't useEffect only supposed react to change in cardsPicked? Well I can bypass this for now if I start counting score from -1 instead of 0 but I have to do something about that
+    // oh waaaait if there is a dependency array then a hook called 1) when the component is mounted, and 2) when the dependency is changed. hmmmmm okay okay
     useEffect(() => {
-        if (checkForSameCard()) {
+        // I added an extra condition to skip the initial render. Now useEffect works only when cardsPicked has more than one element - i. e. when at least one card was clicked
+        if (cardsPicked.length > 0 && checkForSameCard()) {
             incrementCount();
-        } else {
+            console.log(score);
+        } else if (!checkForSameCard()) {
             alert('test');
         }
     }, [cardsPicked]);
@@ -38,8 +41,8 @@ export const Gameboard = ({score, incrementCount}) => {
         setCardsPicked([...cardsPicked, cardsToAdd]);
 
     }
+
     const alertWinOrLose = () => {
-        //console.log(cardsPicked.length);
         if (cardsPicked.length === 20) {
             alert('win');
         }
@@ -50,25 +53,10 @@ export const Gameboard = ({score, incrementCount}) => {
     const checkForSameCard = () => {
         const copy = [... new Set (cardsPicked)];
 
-        // ig it's redundant to compare elements sinse I really just compare arr length? 
         const compareArrays = (a, b) => 
         a.length === b.length;
-        //incrementCount();
-        return compareArrays(cardsPicked, copy);
-        // if (compareArrays(cardsPicked, copy)) {
-        //     console.log(cardsPicked);
-        //     console.log(copy);
-        //     incrementCount();
-        // } else {
-        //     alert('brrrr wrong card you lose meatbag');
-        // }
 
-        // if (compareArrays(cardsPicked, copy)) {
-        //     incrementCount();
-        //     console.log(score);
-        // } else {
-        //     alert('brrrr wrong card you lose meatbag');
-        // }
+        return compareArrays(cardsPicked, copy);
     }
 
     useEffect(() => {
@@ -77,7 +65,7 @@ export const Gameboard = ({score, incrementCount}) => {
 
     // some minor changes: first, it seems fucking ludicrous to write a separate function to set state to unplayed cards. Isn't the updateDisplayedCards is like a container function to smaller functions? Besides, setUnplayedCards IS a function so it's not like I'm violating the single responsibility principle here. 
     const updateDisplayedCards = (e) => {
-        // okay it's a fucking mess I'm not sure what I'm doing wrong
+
         const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
         const cardsToAdd = unplayedCards.filter(elem => elem.key !== gifKey);
         setUnplayedCards(cardsToAdd);
