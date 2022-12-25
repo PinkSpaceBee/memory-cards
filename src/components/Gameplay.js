@@ -34,11 +34,9 @@ export const Gameboard = ({score, incrementCount}) => {
 
     const pickCard = (e) => {
         const gifKey = e.outerHTML.substring(10, e.outerHTML.length - 2);
+        const cardToAdd = deck.filter(elem => elem.key === gifKey)[0];
 
-        // deck.filter returns an array consisting of a single object ofc, so I add this object to the cardsPicked array and not the filtered deck
-        const cardsToAdd = deck.filter(elem => elem.key === gifKey)[0];
-
-        setCardsPicked([...cardsPicked, cardsToAdd]);
+        setCardsPicked([...cardsPicked, cardToAdd]);
 
     }
 
